@@ -34,7 +34,7 @@ services:
         - PHP_MAX_POST=${PHP_MAX_POST:-100M}
     image: ecommerce:api-dev
     ports:
-      - "8000:8000"
+      - "8000:80"
     volumes:
       - .:/var/www/backend
     networks:

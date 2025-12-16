@@ -1,378 +1,59 @@
-# 🛒 Ecommerce API - Laravel con Docker
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Proyecto de API para ecommerce desarrollado con Laravel, PHP 8.4, Nginx, PostgreSQL y Docker.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## 📋 Tabla de Contenidos
+## About Laravel
 
-- [Requisitos Previos](#-requisitos-previos)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Instalación](#-instalación)
-- [Configuración](#-configuración)
-- [Comandos Docker](#-comandos-docker)
-- [Acceso a los Servicios](#-acceso-a-los-servicios)
-- [Desarrollo](#-desarrollo)
-- [Solución de Problemas](#-solución-de-problemas)
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
----
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-## 🔧 Requisitos Previos
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-Antes de comenzar, asegúrate de tener instalado:
+## Learning Laravel
 
-- **Docker Desktop** (versión 20.10 o superior)
-  - [Descargar para Windows](https://docs.docker.com/desktop/install/windows-install/)
-  - [Descargar para Mac](https://docs.docker.com/desktop/install/mac-install/)
-  - [Descargar para Linux](https://docs.docker.com/desktop/install/linux-install/)
-- **Docker Compose** (incluido en Docker Desktop)
-- **Git** para clonar el repositorio
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-### Verificar instalación
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-```bash
-docker --version
-docker-compose --version
-```
+## Laravel Sponsors
 
----
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-## 📁 Estructura del Proyecto
+### Premium Partners
 
-```
-laravel/
-├── docker/
-│   ├── php/
-│   │   ├── Dockerfile              # Imagen PHP 8.4 + Nginx + Supervisor
-│   │   └── app/
-│   │       ├── config/
-│   │       │   └── webserver.conf  # Configuración principal de Nginx
-│   │       ├── site/
-│   │       │   └── default.conf    # Virtual host de Nginx
-│   │       └── supervisor/
-│   │           ├── supervisord.conf    # Configuración de Supervisor
-│   │           └── webserver.conf      # Procesos Nginx + PHP-FPM
-│   └── postgres/
-│       └── Dockerfile              # Imagen PostgreSQL 18.1
-├── docker-compose.yml              # Orquestación de servicios
-├── .env                            # Variables de entorno (no commitear)
-├── .env.example                    # Plantilla de variables de entorno
-├── .dockerignore                   # Archivos excluidos del build
-└── README.md                       # Este archivo
-```
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
----
+## Contributing
 
-## 🚀 Instalación
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### Paso 1: Clonar el repositorio
+## Code of Conduct
 
-```bash
-git clone <url-del-repositorio>
-cd laravel
-```
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-### Paso 2: Configurar variables de entorno
+## Security Vulnerabilities
 
-Copia el archivo de ejemplo y ajusta los valores según sea necesario:
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-```bash
-# Windows (PowerShell)
-Copy-Item .env.example .env
+## License
 
-# Linux/Mac
-cp .env.example .env
-```
-
-### Paso 3: Editar el archivo `.env`
-
-Abre el archivo `.env` y verifica/modifica las siguientes variables:
-
-```env
-COMPOSER_VERSION=2.8.12
-```
-
-### Paso 4: Construir las imágenes Docker
-
-```bash
-docker-compose build
-```
-
-Este proceso puede tomar varios minutos la primera vez, ya que descarga e instala:
-- PHP 8.4 con extensiones (GD, Redis, Imagick, etc.)
-- Nginx
-- Composer
-- PostgreSQL 18.1
-
-### Paso 5: Iniciar los contenedores
-
-```bash
-docker-compose up -d
-```
-
-### Paso 6: Verificar que los contenedores están corriendo
-
-```bash
-docker-compose ps
-```
-
-Deberías ver algo como:
-
-```
-NAME       IMAGE              STATUS          PORTS
-api        ecommerce:api-dev  Up              0.0.0.0:8000->8000/tcp
-postgres   postgres:dev       Up              0.0.0.0:5432->5432/tcp
-```
-
----
-
-## ⚙️ Configuración
-
-### Variables de Entorno del Docker Compose
-
-| Variable | Descripción | Valor por defecto |
-|----------|-------------|-------------------|
-| `COMPOSER_VERSION` | Versión de Composer a instalar | `2.8.12` |
-
-### Configuración de PostgreSQL
-
-| Variable | Valor |
-|----------|-------|
-| `POSTGRES_USER` | `root` |
-| `POSTGRES_PASSWORD` | `root` |
-| `POSTGRES_DB` | `ecommerce` |
-| Puerto expuesto | `5432` |
-
-### Configuración de PHP
-
-El Dockerfile acepta los siguientes argumentos de build (configurables via `docker-compose.yml`):
-
-| Argumento | Descripción |
-|-----------|-------------|
-| `PHP_MEMORY_LIMIT` | Límite de memoria PHP |
-| `PHP_MAX_EXECUTION_TIME` | Tiempo máximo de ejecución |
-| `PHP_MAX_UPLOAD` | Tamaño máximo de upload |
-| `PHP_MAX_FILE_UPLOAD` | Número máximo de archivos |
-| `PHP_MAX_POST` | Tamaño máximo de POST |
-| `OPCACHE_*` | Configuraciones de OPcache |
-
----
-
-## 🐳 Comandos Docker
-
-### Comandos básicos
-
-```bash
-# Construir imágenes
-docker-compose build
-
-# Iniciar contenedores en segundo plano
-docker-compose up -d
-
-# Iniciar contenedores y ver logs
-docker-compose up
-
-# Detener contenedores
-docker-compose down
-
-# Detener y eliminar volúmenes (¡CUIDADO: borra datos de BD!)
-docker-compose down -v
-
-# Ver logs de todos los servicios
-docker-compose logs -f
-
-# Ver logs de un servicio específico
-docker-compose logs -f api
-docker-compose logs -f postgres
-
-# Ver estado de los contenedores
-docker-compose ps
-```
-
-### Acceder a los contenedores
-
-```bash
-# Acceder al contenedor de la API (PHP)
-docker exec -it api bash
-
-# Acceder al contenedor de PostgreSQL
-docker exec -it postgres bash
-
-# Ejecutar comandos de psql directamente
-docker exec -it postgres psql -U root -d ecommerce
-```
-
-### Comandos de Laravel dentro del contenedor
-
-```bash
-# Primero accede al contenedor
-docker exec -it api bash
-
-# Luego ejecuta comandos de Laravel/Artisan
-php artisan migrate
-php artisan db:seed
-php artisan cache:clear
-php artisan config:clear
-composer install
-composer update
-```
-
-### Comandos rápidos sin entrar al contenedor
-
-```bash
-# Ejecutar migraciones
-docker exec -it api php artisan migrate
-
-# Ejecutar composer install
-docker exec -it api composer install
-
-# Ejecutar tests
-docker exec -it api php artisan test
-```
-
----
-
-## 🌐 Acceso a los Servicios
-
-Una vez que los contenedores estén corriendo:
-
-| Servicio | URL/Conexión | Descripción |
-|----------|--------------|-------------|
-| **API Laravel** | http://localhost:8000 | Aplicación principal |
-| **PostgreSQL** | `localhost:5432` | Base de datos |
-
-### Conexión a PostgreSQL desde un cliente
-
-- **Host:** `localhost`
-- **Puerto:** `5432`
-- **Usuario:** `root`
-- **Contraseña:** `root`
-- **Base de datos:** `ecommerce`
-
----
-
-## 💻 Desarrollo
-
-### Flujo de trabajo recomendado
-
-1. **Iniciar el entorno:**
-   ```bash
-   docker-compose up -d
-   ```
-
-2. **Desarrollar:** Los cambios en el código se reflejan automáticamente gracias al volumen montado.
-
-3. **Ver logs en tiempo real:**
-   ```bash
-   docker-compose logs -f api
-   ```
-
-4. **Ejecutar comandos de Artisan:**
-   ```bash
-   docker exec -it api php artisan <comando>
-   ```
-
-5. **Detener al finalizar:**
-   ```bash
-   docker-compose down
-   ```
-
-### Reconstruir después de cambios en Dockerfile
-
-Si modificas el `Dockerfile` o archivos de configuración de Docker:
-
-```bash
-docker-compose build --no-cache
-docker-compose up -d
-```
-
----
-
-## 🔍 Solución de Problemas
-
-### El contenedor no inicia
-
-```bash
-# Ver logs detallados
-docker-compose logs api
-
-# Verificar el estado
-docker-compose ps
-```
-
-### Error de permisos en storage/logs
-
-```bash
-docker exec -it api chmod -R 777 storage bootstrap/cache
-```
-
-### Puerto ya en uso
-
-Si el puerto 8000 o 5432 ya está en uso, modifica el `docker-compose.yml`:
-
-```yaml
-ports:
-  - "8080:8000"  # Cambia 8000 por otro puerto disponible
-```
-
-### Limpiar todo y empezar de nuevo
-
-```bash
-# Detener y eliminar contenedores, redes y volúmenes
-docker-compose down -v
-
-# Eliminar imágenes del proyecto
-docker rmi ecommerce:api-dev postgres:dev
-
-# Reconstruir todo
-docker-compose build --no-cache
-docker-compose up -d
-```
-
-### Error de conexión a PostgreSQL desde Laravel
-
-Verifica que en tu `.env` de Laravel tengas:
-
-```env
-DB_CONNECTION=pgsql
-DB_HOST=postgres
-DB_PORT=5432
-DB_DATABASE=ecommerce
-DB_USERNAME=root
-DB_PASSWORD=root
-```
-
-> **Nota:** El host debe ser `postgres` (nombre del servicio en docker-compose), no `localhost`.
-
----
-
-## 📦 Servicios incluidos en el contenedor PHP
-
-- **PHP 8.4.3** (FPM)
-- **Nginx** (servidor web)
-- **Supervisor** (gestor de procesos)
-- **Composer** (gestor de dependencias PHP)
-
-### Extensiones PHP instaladas
-
-- mysqli, pdo, pdo_mysql
-- opcache, pcntl, bcmath
-- gd, imagick, exif
-- zip, intl, xsl
-- redis, igbinary, msgpack
-- gettext, shmop, sysvmsg, sysvsem, sysvshm, ftp
-
----
-
-## 📄 Licencia
-
-Este proyecto está bajo la licencia [MIT](LICENSE).
-
----
-
-## 👥 Contribución
-
-1. Fork el proyecto
-2. Crea tu rama de feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
