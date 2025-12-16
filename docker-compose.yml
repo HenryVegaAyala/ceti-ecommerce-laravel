@@ -27,6 +27,11 @@ services:
       dockerfile: Dockerfile
       args:
         - COMPOSER_VERSION=${COMPOSER_VERSION}
+        - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-8000M}
+        - PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME:-7200}
+        - PHP_MAX_UPLOAD=${PHP_MAX_UPLOAD:-50M}
+        - PHP_MAX_FILE_UPLOAD=${PHP_MAX_FILE_UPLOAD:-200}
+        - PHP_MAX_POST=${PHP_MAX_POST:-100M}
     image: ecommerce:api-dev
     ports:
       - "8000:8000"
