@@ -20,11 +20,12 @@ RUN apk upgrade --update-cache --available && apk --update --no-cache add \
     imagemagick-dev pcre-dev libc-dev pkgconf libtool make autoconf g++ \
     cyrus-sasl-dev libgsasl-dev freetype-dev libjpeg-turbo-dev libzip-dev \
     libpng-dev icu-dev libc6-compat gettext-dev libxslt-dev supervisor gcc \
-    shadow curl-dev openssl-dev openssh bash
+    shadow curl-dev openssl-dev openssh bash \
+    postgresql-dev
 
 ####### PHP EXTENSIONS
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install -j$(nproc) mysqli pdo pdo_mysql opcache pcntl gd \
+    docker-php-ext-install -j$(nproc) mysqli pdo pdo_mysql pdo_pgsql pgsql opcache pcntl gd \
     bcmath zip exif gettext shmop sysvmsg sysvsem sysvshm xsl ftp intl && \
     pecl channel-update pecl.php.net && \
     pecl install imagick redis igbinary msgpack && \
@@ -94,3 +95,7 @@ ADD app/supervisor/webserver.conf /etc/supervisor.d/cron.conf
 ENV SHELL=/bin/bash
 EXPOSE 80
 WORKDIR /var/www/backend
+
+####### START SUPERVISOR (nginx + php-fpm)
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+
